@@ -1,9 +1,9 @@
 package chapter06;
 
-import com.ibm.icu.lang.UCharacter;
+
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
-import org.apache.flink.util.TimeUtils;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
