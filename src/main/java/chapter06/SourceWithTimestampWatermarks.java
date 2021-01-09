@@ -2,6 +2,10 @@ package chapter06;
 
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 import org.apache.flink.streaming.api.watermark.Watermark;
+import org.apache.hadoop.hdfs.security.token.block.DataEncryptionKey;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * create 2021-01-05
@@ -17,8 +21,10 @@ public class SourceWithTimestampWatermarks implements SourceFunction<EventBean> 
                 isRunning = false;
             }else{
                 EventBean bean = Data.BEANS[count];
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
                 sourceContext.collectWithTimestamp(bean,bean.getTime());
-                System.out.println("send data is :" + bean.getList().get(0) + "==" + bean.getTime());
+                Date dd = new Date(bean.getTime());
+                System.out.println("send data is :" + bean.getList().get(0) + "==" + sdf.format(dd));
                 if(bean.getList().get(0).indexOf("late") < 0){
                     sourceContext.emitWatermark(new Watermark(System.currentTimeMillis()));
                 }

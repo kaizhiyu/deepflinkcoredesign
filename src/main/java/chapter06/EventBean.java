@@ -1,6 +1,8 @@
 package chapter06;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,9 +41,11 @@ public class EventBean {
         for (int i =0;i<list.size();i++){
             content += list.get(i) + ",";
         }
+        Date dt = new Date(time);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         return "EventBean{" +
                 "list=[" + content.substring(0,content.length() - 1) +
-                "], time=" + time +
+                "], time=" + sdf.format(dt) +
                 '}';
     }
 }
