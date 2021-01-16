@@ -4,6 +4,7 @@ package chapter04;
 import common.Trade;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.api.common.functions.RuntimeContext;
+import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
@@ -14,7 +15,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 public class CustomTemplate {
     public static void main(String[] args) throws Exception{
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setParallelism(6);
+        env.setParallelism(3);
         final String flag = "分区策略前子任务名称：";
         DataStream<Trade> inputStream = env.addSource(new PartitionSource());
         DataStream<Trade> mapOne = inputStream.map(new RichMapFunction<Trade, Trade>() {
@@ -27,8 +28,8 @@ public class CustomTemplate {
                 return trade;
             }
         });
-        DataStream<Trade> mapTwo = mapOne.partitionCustom(new MyPartitioner(),"cardNum");
-
+//        DataStream<Trade> mapTwo = mapOne.partitionCustom(new MyPartitioner(),"cardNum");
+        DataStream<Trade> mapTwo = mapOne.broadcast();
         DataStream<Trade> mapThree = mapTwo.map(new RichMapFunction<Trade, Trade>() {
             @Override
             public Trade map(Trade trade) throws Exception {
