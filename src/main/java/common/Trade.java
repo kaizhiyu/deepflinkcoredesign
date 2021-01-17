@@ -19,9 +19,9 @@ public class Trade implements Serializable {
     }
 
 
-    private String cardNum;
-    private int trade;
-    private String time;
+    public String cardNum;
+    public int trade;
+    public String time;
 
     public String getCardNum() {
         return cardNum;
