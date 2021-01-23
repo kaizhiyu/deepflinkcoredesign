@@ -36,7 +36,7 @@ public class SourceForWindow implements SourceFunction<Tuple3<String,Integer,Str
             ctx.collect(result);
             System.out.println("send data: " + result);
 
-            if(stopSession && count % WORDS.length == 0){
+            if(stopSession || count % WORDS.length == 0){
                 Thread.sleep(10000);
             }else{
                 Thread.sleep(sleepTime);

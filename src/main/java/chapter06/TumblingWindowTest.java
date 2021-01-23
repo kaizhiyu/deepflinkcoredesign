@@ -2,14 +2,17 @@ package chapter06;
 
 import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.api.java.tuple.Tuple3;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.KeyedStream;
 import org.apache.flink.streaming.api.datastream.WindowedStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
+import org.apache.flink.util.Collector;
 
 import java.util.stream.Stream;
 
@@ -25,7 +28,9 @@ public class TumblingWindowTest {
         DataStream<Tuple3<String,Integer,String>> source = env.addSource(new SourceForWindow(1,false));
         KeyedStream<Tuple3<String,Integer,String>, Tuple> keyedStream = source.keyBy("f0");
         WindowedStream<Tuple3<String,Integer,String>,Tuple, TimeWindow> windowedStream = keyedStream.window(TumblingEventTimeWindows.of(Time.seconds(3)));
+
         DataStream<Tuple3<String,Integer,String>> sum = windowedStream.sum("f1");
+
         sum.print("窗口统计：");
         env.execute("window");
 
