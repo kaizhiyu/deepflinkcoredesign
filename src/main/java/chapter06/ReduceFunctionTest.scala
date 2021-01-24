@@ -18,11 +18,11 @@ object ReduceFunctionTest {
     val streamSource = env.addSource(new SourceForWindow(1000,false))
     val reduceStream =  streamSource.keyBy("f0")
       .window(TumblingProcessingTimeWindows.of(Time.seconds(5)))
-      .reduce((value,value1) =>{
-        if(value.f1 > value1.f1){
-          value1
+      .reduce((old,current) =>{
+        if(old.f1 > current.f1){
+          current
         }else{
-          value
+          old
         }
       })
     reduceStream.print()

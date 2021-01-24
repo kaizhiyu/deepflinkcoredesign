@@ -10,7 +10,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 public class FoldFunPracitise {
     public static void main(String[] args) throws Exception{
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        DataStream<Tuple3<String,Integer,String>> source = env.addSource(new SourceForWindow(500,true));
+        DataStream<Tuple3<String,Integer,String>> source = env.addSource(new SourceForWindow(1000,false));
         DataStream<String> ds = source.keyBy("f0")
                 .window(TumblingProcessingTimeWindows.of(Time.seconds(5)))
                 .fold("start", new FoldFunction<Tuple3<String, Integer, String>, String>() {
@@ -20,7 +20,7 @@ public class FoldFunPracitise {
                         return s;
                     }
                 });
-        ds.print();
+        ds.print("输出结果");
         env.execute("fold function");
     }
 }
