@@ -14,9 +14,10 @@ import org.apache.flink.streaming.api.windowing.time.Time
  */
 object ReduceFunctionTest {
   def main(args: Array[String]): Unit = {
-    val env = StreamExecutionEnvironment.getExecutionEnvironment
+    val env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI()
+    env.setParallelism(2)
     val streamSource = env.addSource(new SourceForWindow(1000,false))
-    val reduceStream =  streamSource.keyBy("f0")
+    val reduceStream =  streamSource.map(new RichFunctionCounter()).keyBy("f0")
       .window(TumblingProcessingTimeWindows.of(Time.seconds(5)))
       .reduce((old,current) =>{
         if(old.f1 > current.f1){

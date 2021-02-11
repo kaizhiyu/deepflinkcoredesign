@@ -18,10 +18,18 @@ public class Trade implements Serializable {
         this.time = time;
     }
 
+    public Trade(String user,int trade,String cardNum,String time){
+        this.user = user;
+        this.cardNum = cardNum;
+        this.trade = trade;
+        this.time = time;
+    }
+
 
     public String cardNum;
     public int trade;
     public String time;
+    public String user;
 
     public String getCardNum() {
         return cardNum;
@@ -45,6 +53,14 @@ public class Trade implements Serializable {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
     @Override
