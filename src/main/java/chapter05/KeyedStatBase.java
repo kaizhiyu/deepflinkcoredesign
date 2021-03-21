@@ -17,6 +17,7 @@ public class KeyedStatBase {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.enableCheckpointing(1000);
 
+
         env.setParallelism(1);
         KeyedStream<Tuple2<Integer,Integer>,Tuple> keyedStream = before(env);
         DataStream<Tuple2<Integer,Integer>> resutlStream = keyedStream.flatMap(new ValueStateFlatMap()).uid("kewew");
